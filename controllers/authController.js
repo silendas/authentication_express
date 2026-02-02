@@ -4,25 +4,33 @@ const jwt = require('jsonwebtoken');
 
 exports.register = async (req, res) => {
     try {
-        const { fullName, email, password} = req.body;
+        const { fullName, email, password } = req.body;
 
         let user = await User.findOne({ where: { email } });
-        if (user) return res.status(400).json({ message: "User sudah terdaftar" });
+        if (user) return res.status(400).send("User sudah terdaftar");
 
         const salt = await bcrypt.genSalt(10);
         const hashedPassword = await bcrypt.hash(password, salt);
 
-        user = new User({
+        const newUser = await User.create({
             fullName,
             email,
             password: hashedPassword,
         });
 
-        await user.save();
+        const token = jwt.sign(
+            { id: newUser.id, tier: newUser.membershipTier },
+            process.env.JWT_SECRET,
+            { expiresIn: '1h' }
+        );
 
-        res.redirect('/login');
+        res.cookie('token', token, { httpOnly: true });
+
+        res.redirect('/');
+        
     } catch (err) {
-        res.status(500).json({ message: "Server Error" });
+        console.error(err);
+        res.status(500).send("Server Error");
     }
 };
 
