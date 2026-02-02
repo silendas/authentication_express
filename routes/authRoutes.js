@@ -3,8 +3,8 @@ const router = express.Router();
 const authController = require('../controllers/authController');
 const passport = require('passport');
 
-router.post('/register', authController.registerManual);
-router.post('/login', authController.loginManual);
+router.post('/register', authController.register);
+router.post('/login', authController.login);
 
 router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
 

@@ -1,9 +1,8 @@
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const { where } = require('sequelize');
 
-exports.registerManual = async (req, res) => {
+exports.register = async (req, res) => {
     try {
         const { fullName, email, password} = req.body;
 
@@ -20,13 +19,14 @@ exports.registerManual = async (req, res) => {
         });
 
         await user.save();
-        res.status(201).json({ message: "Registrasi Berhasil!" });
+
+        res.redirect('/login');
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
     }
 };
 
-exports.loginManual = async (req, res) => {
+exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
 
@@ -42,11 +42,7 @@ exports.loginManual = async (req, res) => {
             { expiresIn: '1h' }
         );
 
-        res.json({
-            message: "Login Berhasil!",
-            token,
-            user: { name: user.fullName, tier: user.membershipTier }
-        });
+        res.redirect('/');
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
     }
