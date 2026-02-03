@@ -1,0 +1,50 @@
+<%- include('../partials/header') %>
+
+<div class="bg-[#F8FAFC] min-h-screen py-12 px-4">
+    <div class="max-w-6xl mx-auto"> <div class="flex items-center justify-between mb-10">
+            <div>
+                <h1 class="text-3xl font-black text-slate-900 tracking-tight">Koleksi Video</h1>
+                <p class="text-slate-500 font-medium text-sm">Tonton materi tutorial eksklusif langsung di sini.</p>
+            </div>
+            <a href="/dashboard" class="hidden sm:flex items-center gap-2 text-sm font-bold text-slate-400 hover:text-rose-600 transition">
+                <span>←</span> Dashboard
+            </a>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <% videos.forEach(vid => { %>
+                <div class="group bg-white p-5 rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:shadow-rose-100/50 transition-all duration-300">
+                    <div class="flex flex-col gap-5">
+                        
+                        <div class="aspect-video bg-slate-900 rounded-[1.8rem] overflow-hidden border border-slate-50">
+                            <iframe 
+                                class="w-full h-full"
+                                src="<%= vid.videoUrl %>" 
+                                title="<%= vid.title %>" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
+
+                        <div class="px-2 pb-2">
+                            <div class="flex items-center gap-2 mb-2">
+                                <span class="px-2 py-0.5 bg-rose-50 text-rose-600 text-[9px] font-black uppercase tracking-widest rounded-md">
+                                    Video
+                                </span>
+                            </div>
+                            
+                            <h2 class="text-lg font-black text-slate-800 group-hover:text-rose-600 transition-colors leading-tight line-clamp-1">
+                                <%= vid.title %>
+                            </h2>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <div class="mt-12 text-center sm:hidden">
+            <a href="/dashboard" class="text-slate-400 font-bold text-sm">← Kembali ke Dashboard</a>
+        </div>
+    </div>
+</div>
