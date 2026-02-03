@@ -6,7 +6,8 @@ const dotenv = require('dotenv');
 const passport = require('passport');
 require('./config/passport');
 
-const apiRouter = require('./routes/index');
+const authRoute = require('./routes/authRoute');
+const adminRoute = require('./routes/adminRoute');
 const contentRoute = require('./routes/contentRoute');
 
 dotenv.config();
@@ -23,12 +24,13 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
+app.use('/api', authRoute);
+app.use('/admin', adminRoute);
+
 app.get('/login', (req, res) => res.render('login'));
 app.get('/register', (req, res) => res.render('register'));
 
-app.use('/api', apiRouter);
-
-app.use('/', protect, contentRoute);
+app.use('/dashboard', protect, contentRoute);
 
 app.get('/', (req, res) => res.render('index'));
 

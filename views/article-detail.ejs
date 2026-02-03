@@ -1,0 +1,16 @@
+<%- include('partials/header') %>
+<div class="max-w-4xl mx-auto p-8">
+    <a href="/contents/articles" class="text-blue-500 hover:underline mb-6 inline-block">← Kembali ke Daftar Artikel</a>
+
+    <article class="bg-white p-10 rounded-3xl border shadow-sm">
+        
+        <h1 class="text-4xl font-black mt-4 mb-6 leading-tight">
+            <%= article.title %>
+        </h1>
+
+        <div class="prose prose-blue max-w-none text-gray-700 leading-relaxed text-lg">
+            <%= article.content %>
+        </div>
+    </article>
+
+</div>

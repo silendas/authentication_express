@@ -26,6 +26,10 @@ const User = sequelize.define('User', {
     membershipTier: {
         type: DataTypes.ENUM('A', 'B', 'C'),
         defaultValue: 'A'
+    },
+    role: {
+        type: DataTypes.ENUM('user', 'admin'),
+        defaultValue: 'user'
     }
 });
 

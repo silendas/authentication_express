@@ -4,6 +4,6 @@ const contentController = require("../controllers/contentController");
 
 router.get("/articles", contentController.getArticles);
 router.get("/videos", contentController.getVideos);
-router.get("/dashboard", contentController.getMainDashboard);
+router.get("/", contentController.getMainDashboard);
 
 module.exports = router;

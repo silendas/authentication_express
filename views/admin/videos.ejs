@@ -1,0 +1,101 @@
+<%- include('../partials/header') %>
+<%- include('../partials/admin-sidebar') %>
+
+<div class="p-8">
+    <div class="flex justify-between items-center mb-8">
+        <h1 class="text-3xl font-black text-gray-800">Manajemen Video</h1>
+        <button onclick="openVideoModal('create')" class="bg-red-600 text-white px-6 py-2 rounded-xl font-bold hover:bg-red-700 shadow-lg transition">
+            + Tambah Video
+        </button>
+    </div>
+
+    <div class="bg-white border rounded-2xl overflow-hidden shadow-sm">
+        <table class="w-full text-left">
+            <thead class="bg-gray-50 border-b">
+                <tr>
+                    <th class="p-4 font-bold text-gray-600">Judul Video</th>
+                    <th class="p-4 font-bold text-gray-600 text-center">Preview</th>
+                    <th class="p-4 font-bold text-gray-600 text-center">Aksi</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% videos.forEach(vid => { %>
+                <tr class="border-b last:border-0 hover:bg-gray-50">
+                    <td class="p-4 font-medium text-gray-800"><%= vid.title %></td>
+                    <td class="p-4 text-center">
+                        <a href="<%= vid.videoUrl %>" target="_blank" class="text-blue-500 text-xs hover:underline">Buka Link ↗</a>
+                    </td>
+                    <td class="p-4 text-center space-x-3">
+                        <button onclick="openVideoModal('edit', '<%= vid.id %>', '<%= vid.title %>', '<%= vid.videoUrl %>')" 
+                                class="text-yellow-600 font-bold hover:underline">Edit</button>
+                        
+                        <form action="/admin/videos/delete/<%= vid.id %>" method="POST" class="inline" onsubmit="return confirm('Hapus video ini?')">
+                            <button type="submit" class="text-red-600 font-bold hover:underline">Hapus</button>
+                        </form>
+                    </td>
+                </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div id="videoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white w-full max-w-xl rounded-3xl shadow-2xl overflow-hidden">
+        <div class="p-6 border-b flex justify-between items-center">
+            <h2 id="modalVideoTitle" class="text-xl font-black">Tambah Video</h2>
+            <button onclick="closeVideoModal()" class="text-gray-400 hover:text-gray-600 text-2xl">&times;</button>
+        </div>
+        <form id="videoForm" method="POST" class="p-6 space-y-4">
+            <div>
+                <label class="block mb-1 font-bold text-gray-700">Judul Video</label>
+                <input type="text" id="formVideoTitle" name="title" class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-red-500" required>
+            </div>
+            <div>
+                <label class="block mb-1 font-bold text-gray-700">URL Video (YouTube Embed)</label>
+                <input type="text" id="formVideoUrl" name="videoUrl" placeholder="https://www.youtube.com/embed/..." class="w-full p-3 border rounded-xl outline-none focus:ring-2 focus:ring-red-500" required>
+                <p class="text-[10px] text-gray-400 mt-1 italic">*Gunakan format /embed/ agar bisa diputar di dashboard user.</p>
+            </div>
+            <div class="flex justify-end space-x-3 pt-4">
+                <button type="button" onclick="closeVideoModal()" class="px-6 py-2 font-bold text-gray-500">Batal</button>
+                <button type="submit" class="bg-red-600 text-white px-8 py-2 rounded-xl font-bold hover:bg-red-700">Simpan Video</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+</main>
+</div>
+
+<script>
+    const vModal = document.getElementById('videoModal');
+    const vForm = document.getElementById('videoForm');
+    const vModalTitle = document.getElementById('modalVideoTitle');
+    const vInputTitle = document.getElementById('formVideoTitle');
+    const vInputUrl = document.getElementById('formVideoUrl');
+
+    function openVideoModal(mode, id = '', title = '', url = '') {
+        vModal.classList.remove('hidden');
+        vModal.classList.add('flex');
+        
+        if (mode === 'edit') {
+            vModalTitle.innerText = 'Edit Video';
+            vForm.action = `/admin/videos/edit/${id}`;
+            vInputTitle.value = title;
+            vInputUrl.value = url;
+        } else {
+            vModalTitle.innerText = 'Tambah Video';
+            vForm.action = '/admin/videos/create';
+            vForm.reset();
+        }
+    }
+
+    function closeVideoModal() {
+        vModal.classList.add('hidden');
+        vModal.classList.remove('flex');
+    }
+
+    window.onclick = function(event) {
+        if (event.target == vModal) closeVideoModal();
+    }
+</script>

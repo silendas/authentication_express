@@ -16,6 +16,24 @@ exports.getArticles = async (req, res) => {
     }
 };
 
+exports.getArticleDetail = async (req, res) => {
+    try {
+        const { id } = req.params;
+        const article = await Article.findByPk(id);
+
+        if (!article) {
+            return res.status(404).send('Artikel tidak ditemukan');
+        }
+
+        res.render('article-detail', { 
+            article, 
+            user: req.user
+        });
+    } catch (err) {
+        res.status(500).send(err.message);
+    }
+};
+
 exports.getVideos = async (req, res) => {
     try {
         const limit = getLimitByTier(req.user.membershipTier);
