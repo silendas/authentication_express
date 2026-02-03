@@ -2,10 +2,12 @@ const express = require('express');
 const cookieParser = require('cookie-parser');
 const { connectDB } = require('./config/db'); 
 const { protect } = require('./middlewares/middleware');
-const apiRouter = require('./routes/index');
 const dotenv = require('dotenv');
 const passport = require('passport');
 require('./config/passport');
+
+const apiRouter = require('./routes/index');
+const contentRoute = require('./routes/contentRoute');
 
 dotenv.config();
 connectDB();
@@ -21,15 +23,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(passport.initialize());
 
-app.get('/', protect, (req, res) => {
-    res.render('index', { 
-        user: req.user 
-    });
-});
 app.get('/login', (req, res) => res.render('login'));
 app.get('/register', (req, res) => res.render('register'));
 
 app.use('/api', apiRouter);
+
+app.use('/', protect, contentRoute);
+
+app.get('/', (req, res) => res.render('index'));
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server jalan di port ${PORT}`));

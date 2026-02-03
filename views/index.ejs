@@ -1,20 +1,63 @@
 <%- include('partials/header') %>
 
-<main class="flex items-center justify-center h-screen w-full px-4">
-    <div class="bg-white p-10 rounded-3xl shadow-2xl w-full max-w-2xl border border-gray-50 text-center">
-        <h1 class="text-4xl font-extrabold text-gray-900 mb-4">Selamat Datang di Dashboard! 🚀</h1>
-        <p class="text-gray-600 mb-8 text-lg">Kamu berhasil login menggunakan akun media sosial kamu.</p>
-        
-        <div class="bg-blue-50 p-6 rounded-2xl mb-8 inline-block">
-            <p class="text-blue-800 font-semibold">Status Membership: <span class="text-blue-600">Tier A</span></p>
-        </div>
-
-        <div>
-            <a href="/api/auth/logout" class="bg-red-500 hover:bg-red-600 text-white font-bold py-3 px-8 rounded-xl transition duration-300">
-                Logout
+<nav class="fixed w-full z-50 bg-white/80 backdrop-blur-md border-b border-gray-100">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <div class="text-2xl font-black text-blue-600 tracking-tighter">MEMBERSHIP.</div>
+        <div class="flex items-center space-x-4">
+            <a href="/login" class="text-sm font-bold text-gray-700 hover:text-blue-600 transition">Masuk</a>
+            <a href="/register" class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-xl text-sm font-bold shadow-lg shadow-blue-200 transition transform active:scale-95">
+                Daftar Akun
             </a>
         </div>
     </div>
-</main>
+</nav>
+
+<header class="pt-32 pb-20 px-6 bg-gradient-to-b from-blue-50 to-white">
+    <div class="max-w-7xl mx-auto text-center">
+        <h1 class="text-5xl md:text-7xl font-black text-gray-900 leading-tight mb-6">
+            Akses Premium Untuk <br><span class="text-blue-600">Masa Depan Anda.</span>
+        </h1>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto mb-10 leading-relaxed">
+            Platform membership terlengkap untuk mengelola kelas, komunitas, dan konten eksklusif Anda hanya dalam satu dasbor yang elegan.
+        </p>
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-4">
+            <a href="/register" class="w-full sm:w-auto bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold text-lg hover:bg-blue-700 transition shadow-xl shadow-blue-100">
+                Mulai Sekarang
+            </a>
+            <a href="#about" class="w-full sm:w-auto bg-white text-gray-700 border-2 border-gray-100 px-10 py-4 rounded-2xl font-bold text-lg hover:bg-gray-50 transition">
+                Pelajari Lebih Lanjut
+            </a>
+        </div>
+    </div>
+</header>
+
+<section id="about" class="py-24 px-6">
+    <div class="max-w-7xl mx-auto grid md:grid-cols-2 gap-16 items-center">
+        <div class="relative">
+            <div class="absolute -top-4 -left-4 w-64 h-64 bg-blue-100 rounded-full mix-blend-multiply filter blur-2xl opacity-70 animate-blob"></div>
+            <div class="relative bg-gray-200 rounded-3xl h-96 w-full shadow-2xl overflow-hidden">
+                <img src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80" alt="About" class="object-cover h-full w-full">
+            </div>
+        </div>
+        <div>
+            <h2 class="text-3xl font-black text-gray-900 mb-6 uppercase tracking-widest text-sm text-blue-600">Tentang Kami</h2>
+            <h3 class="text-4xl font-bold text-gray-900 mb-6 leading-tight">Kami Membangun Jembatan Digital untuk Komunitas Anda.</h3>
+            <p class="text-gray-600 leading-relaxed mb-8">
+                Didirikan sejak tahun 2024, perusahaan kami berdedikasi untuk memberikan solusi autentikasi dan manajemen user yang paling aman dan nyaman di Indonesia. Kami percaya bahwa teknologi harus memudahkan, bukan mempersulit.
+            </p>
+            <div class="grid grid-cols-2 gap-6">
+                <div class="p-4 border border-gray-100 rounded-2xl">
+                    <p class="text-3xl font-black text-blue-600 mb-1">10k+</p>
+                    <p class="text-sm text-gray-500 font-medium">Pengguna Aktif</p>
+                </div>
+                <div class="p-4 border border-gray-100 rounded-2xl">
+                    <p class="text-3xl font-black text-blue-600 mb-1">99.9%</p>
+                    <p class="text-sm text-gray-500 font-medium">Uptime Server</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<%- include('partials/footer') %>
 </body>
 </html>

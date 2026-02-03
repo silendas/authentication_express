@@ -2,10 +2,17 @@ const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
+const generateToken = (user) => {
+    return jwt.sign(
+        { id: user.id, tier: user.membershipTier }, 
+        process.env.JWT_SECRET,
+        { expiresIn: '1h' }
+    );
+};
+
 exports.register = async (req, res) => {
     try {
         const { fullName, email, password } = req.body;
-
         let user = await User.findOne({ where: { email } });
         if (user) return res.status(400).send("User sudah terdaftar");
 
@@ -16,20 +23,14 @@ exports.register = async (req, res) => {
             fullName,
             email,
             password: hashedPassword,
+            membershipTier: 'A'
         });
 
-        const token = jwt.sign(
-            { id: newUser.id, tier: newUser.membershipTier },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
+        const token = generateToken(newUser);
         res.cookie('token', token, { httpOnly: true });
-
-        res.redirect('/');
+        res.redirect('/dashboard');
         
     } catch (err) {
-        console.error(err);
         res.status(500).send("Server Error");
     }
 };
@@ -37,21 +38,37 @@ exports.register = async (req, res) => {
 exports.login = async (req, res) => {
     try {
         const { email, password } = req.body;
-
         const user = await User.findOne({ where: { email } });
+        
         if (!user) return res.status(400).json({ message: "Email tidak ditemukan" });
 
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) return res.status(400).json({ message: "Password salah" });
 
-        const token = jwt.sign(
-            { id: user._id, tier: user.membershipTier },
-            process.env.JWT_SECRET,
-            { expiresIn: '1h' }
-        );
-
-        res.redirect('/');
+        const token = generateToken(user);
+        res.cookie('token', token, { httpOnly: true });
+        
+        res.redirect('/dashboard'); 
     } catch (err) {
         res.status(500).json({ message: "Server Error" });
+    }
+};
+
+exports.logout = (req, res) => {
+    res.clearCookie('token');
+    res.redirect('/login');
+};
+
+exports.socialCallback = (req, res) => {
+    try {
+        const token = generateToken(req.user);
+        res.cookie('token', token, { 
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            maxAge: 3600000
+        });
+        res.redirect('/dashboard'); 
+    } catch (err) {
+        res.redirect('/login');
     }
 };

@@ -18,7 +18,7 @@ const protect = async (req, res, next) => {
         if (!req.user) {
             return res.redirect('/login');
         }
-
+        
         next(); 
     } catch (err) {
         console.error("Token Error:", err);
